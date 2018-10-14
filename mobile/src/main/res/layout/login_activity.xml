@@ -13,7 +13,8 @@
         android:paddingTop="56dp"
         android:paddingLeft="24dp"
         android:paddingRight="24dp"
-       >
+
+        >
 
 
         <EditText android:id="@+id/input_email"
@@ -34,7 +35,7 @@
 
 
         <Button
-            android:id = "@+id/button1"
+            android:id = "@+id/login_button"
             android:layout_height = "wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
@@ -47,10 +48,11 @@
             android:text = "Login"
             />
 
-        <TextView android:id="@+id/link_signup"
+        <TextView android:id="@+id/sign_up_link"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
+            android:clickable="true"
             android:text="No account yet? Create one"
             android:gravity="center"
             android:textSize="16dip"/>

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "80467686491",
+    "firebase_url": "https://applicationmain-7c73a.firebaseio.com",
+    "project_id": "applicationmain-7c73a",
+    "storage_bucket": "applicationmain-7c73a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:80467686491:android:fa7cddd30ed276eb",
+        "android_client_info": {
+          "package_name": "com.sonia.applicationmain"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "80467686491-g6p58i8k7k4p2tphpkmcbm1ddvpd85ob.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sonia.applicationmain",
+            "certificate_hash": "04aa6e32d049c09e24a51754a6a8f70feb3b6f10"
+          }
+        },
+        {
+          "client_id": "80467686491-og1qpivibj0kk301mcasbtoia7dn73b1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsLO2Zjmi0IixhB4Gxa7CnVYWLPBlvV7U"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "80467686491-og1qpivibj0kk301mcasbtoia7dn73b1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
