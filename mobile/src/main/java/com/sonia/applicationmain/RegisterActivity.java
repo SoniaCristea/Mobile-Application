@@ -4,27 +4,31 @@ package com.sonia.applicationmain;
  */
 
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private static final String TAG = "CustomAuthActivity";
     private FirebaseAuth auth;
-    private String mCustomToken;
-    private TokenBroadcastReceiver mTokenReceiver;
+    private EditText input_email;
+    private EditText input_pass;
+    private Button registerBtn;
+    private Snackbar snackbar;
+    private Button backButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,93 +37,52 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         setTitle("Register");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        registerBtn = findViewById(R.id.register_button);
+        input_email = findViewById(R.id.email);
+        input_pass = findViewById(R.id.password);
+        backButton = findViewById(R.id.back_button);
 
-
-        mTokenReceiver = new TokenBroadcastReceiver() {
-            @Override
-            public void onNewToken(String token) {
-                Log.d(TAG, "onNewToken:" + token);
-                setCustomToken(token);
-            }
-        };
         auth = FirebaseAuth.getInstance();
-    }
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = auth.getCurrentUser();
-        System.out.println(currentUser);
-        //updateUI(currentUser);
-    }
-    // [END on_start_check_user]
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        registerReceiver(mTokenReceiver, TokenBroadcastReceiver.getFilter());
-    }
-
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        unregisterReceiver(mTokenReceiver);
-    }
-
-    private void startSignIn() {
-        // Initiate sign in with custom token
-        // [START sign_in_custom]
-
-        System.out.println(mCustomToken);
-        auth.signInWithCustomToken(mCustomToken)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithCustomToken:success");
-                            FirebaseUser user = auth.getCurrentUser();
-                            //updateUI(user);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithCustomToken:failure", task.getException());
-                            Toast.makeText(RegisterActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                            //updateUI(null);
-                        }
-                    }
-                });
-        // [END sign_in_custom]
-    }
+        registerBtn.setOnClickListener(this);
+        backButton.setOnClickListener(this);
 
 
 
-    private void setCustomToken(String token) {
-        mCustomToken = token;
-
-        String status;
-        if (mCustomToken != null) {
-            status = "Token:" + mCustomToken;
-        } else {
-            status = "Token: null";
-        }
-
-        // Enable/disable sign-in button and show the token
-        findViewById(R.id.register).setEnabled((mCustomToken != null));
-        //((TextView) findViewById(R.id.textTokenStatus)).setText(status);
+        auth = FirebaseAuth.getInstance();
     }
 
 
     @Override
     public void onClick(View view) {
 
-        int i = view.getId();
-        if (i == R.id.register) {
-            startSignIn();
-
+        if( view.getId() == R.id.back_button){
+            startActivity(new Intent(RegisterActivity.this,LoginActivity.class));
+            RegisterActivity.this.overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+            finish();
+        }else{
+            if(view.getId() == R.id.register_button){
+                signUpUser(input_email.getText().toString(),input_pass.getText().toString());
+            }
         }
-
     }
 
+    private void signUpUser(String email, String password) {
+
+        auth.createUserWithEmailAndPassword(email,password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(!task.isSuccessful())
+                        {
+                            snackbar = Snackbar.make(findViewById(R.id.activity_register),"Error: "+task.getException(),Snackbar.LENGTH_SHORT);
+                            snackbar.show();
+                        }
+                        else{
+                            snackbar = Snackbar.make(findViewById(R.id.activity_register),"Register success! ",Snackbar.LENGTH_SHORT);
+                            snackbar.show();
+                        }
+                    }
+                });
+    }
 }

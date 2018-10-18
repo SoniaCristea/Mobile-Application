@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ApplicationMain.iml" filepath="$PROJECT_DIR$/ApplicationMain.iml" />
+      <module fileurl="file://C:\Users\Dell\Desktop\Mobile-Application-master\ApplicationMain.iml" filepath="C:\Users\Dell\Desktop\Mobile-Application-master\ApplicationMain.iml" />
       <module fileurl="file://$PROJECT_DIR$/mobile/mobile.iml" filepath="$PROJECT_DIR$/mobile/mobile.iml" />
       <module fileurl="file://$PROJECT_DIR$/things/things.iml" filepath="$PROJECT_DIR$/things/things.iml" />
     </modules>
