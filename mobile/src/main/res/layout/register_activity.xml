@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:fitsSystemWindows="true"
@@ -12,7 +12,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/images"
+        android:background="@drawable/car2"
         android:paddingTop="56dp"
         android:paddingLeft="24dp"
 
@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="90dp"
             android:layout_marginBottom="8dp"
             android:hint="Email" />
 
@@ -92,4 +92,4 @@
 
     </LinearLayout>
 
-</ScrollView>
+</LinearLayout>

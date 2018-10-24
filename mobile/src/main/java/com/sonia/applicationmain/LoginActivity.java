@@ -85,6 +85,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         }
                         else{
                             startActivity(new Intent(LoginActivity.this,MainActivity.class));
+
                         }
                     }
                 });
