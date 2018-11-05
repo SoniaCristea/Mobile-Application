@@ -50,12 +50,14 @@
             </intent-filter>
         </activity>
 
+
+
+        <!--
+             The API key for Google Maps-based APIs.
+        -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
+            android:value="AIzaSyCrFiLDnl2AZMztGOuyxZ3_o_dVZs4DKc4" />
 
         <activity
             android:name=".MapsActivity"

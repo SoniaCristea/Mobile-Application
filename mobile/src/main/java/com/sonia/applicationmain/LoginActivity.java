@@ -15,6 +15,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -117,7 +118,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 requestPermissions(new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.INTERNET}
                         , 10);
             }
-            return;
+
         }
         // this code won't execute IF permissions are not allowed, because in the line above there is return statement.
 
@@ -146,10 +147,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void loginUser(String email,final String password) {
 
-        auth.signInWithEmailAndPassword(email,password)
+        auth.signInWithEmailAndPassword("patriciab@gmail.com","blablabla")
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.w("INFO", "Status of login " + task.isSuccessful());
                         if(!task.isSuccessful())
                         {
                             if(password.length() < 6)
