@@ -24,7 +24,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private LatLng currentLocation;
     private FusedLocationProviderClient mFusedLocationClient;
 
     @Override
@@ -35,9 +34,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-//        currentLocation = getIntent().getExtras().getParcelable("location");
-//        Log.i("loc",currentLocation.toString());
-
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
     }
 
@@ -45,11 +41,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
         }
-
         mFusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
@@ -68,11 +62,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
-
-//        mMap.addMarker(new MarkerOptions().position(currentLocation).title("Here is your car"));
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
-//
-//        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation,15));
     }
 
 }
