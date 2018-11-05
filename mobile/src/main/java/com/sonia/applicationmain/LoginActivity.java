@@ -60,12 +60,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         auth = FirebaseAuth.getInstance();
 
+
+
         /*if( auth.getCurrentUser() != null){
             startActivity(new Intent(LoginActivity.this,MapsActivity.class));
         }*/
 
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+        if ( !locationManager.isProviderEnabled(locationManager.GPS_PROVIDER)){
+            locationManager.setTestProviderEnabled(locationManager.GPS_PROVIDER,true);
+        }
 
 
         listener = new LocationListener() {
@@ -115,7 +121,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
         // this code won't execute IF permissions are not allowed, because in the line above there is return statement.
 
-        locationManager.requestLocationUpdates("gps", 5000, 0, listener);
+        //locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER, 5000, 0, listener);
         loginUser(email.getText().toString(),password.getText().toString());
 
 
@@ -134,6 +140,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if(view.getId() == R.id.login_button){
 
             configure_button();
+
         }
     }
 
@@ -154,7 +161,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         else{
 
                             Intent i = new Intent(LoginActivity.this,MapsActivity.class);
-                            i.putExtra("location",currentLocation);
+                            //i.putExtra("location",currentLocation);
                             startActivity(i);
 
                         }
