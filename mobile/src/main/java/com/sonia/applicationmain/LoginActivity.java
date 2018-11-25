@@ -25,6 +25,7 @@ import android.widget.TextView;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -36,10 +37,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private FirebaseAuth auth;
     private EditText email;
     private EditText password;
-    private LocationManager locationManager;
-    private LocationListener listener;
-    protected LatLng currentLocation;
-
 
 
     @Override
@@ -59,66 +56,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setTitle("Login");
         auth = FirebaseAuth.getInstance();
 
-        /*if( auth.getCurrentUser() != null){
+        if( auth.getCurrentUser() != null){
             startActivity(new Intent(LoginActivity.this,MapsActivity.class));
-        }*/
-
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-
-        if ( !locationManager.isProviderEnabled(locationManager.GPS_PROVIDER)){
-            locationManager.setTestProviderEnabled(locationManager.GPS_PROVIDER,true);
         }
-
-
-        listener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-
-                currentLocation = new LatLng(location.getLongitude(), location.getLatitude());
-            }
-
-            @Override
-            public void onStatusChanged(String s, int i, Bundle bundle) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String s) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String s) {
-
-            }
-        };
-
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case 10:
-                configure_button();
-                break;
-            default:
-                break;
-        }
-    }
-
-    void configure_button() {
-
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions(new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.INTERNET}
-                        , 10);
-            }
-
-        }
-
-        loginUser(email.getText().toString(),password.getText().toString());
-
-
 
     }
 
@@ -133,7 +73,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }else
         if(view.getId() == R.id.login_button){
 
-            configure_button();
+            //configure_button();
+            loginUser(email.getText().toString(),password.getText().toString());
 
         }
     }
@@ -162,4 +103,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     }
                 });
     }
+
+
 }
