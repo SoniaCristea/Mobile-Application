@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.nfc.FormatException;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
@@ -23,6 +24,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -48,10 +50,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private PendingIntent mPendingIntent;
     private IntentFilter[] mFilters;
     private String[][] mTechLists;
-    private Ndef ndefTag;
-    protected LatLng currentLocation;
+    private Tag detectedTag;
     private LocationManager locationManager;
-    private LocationListener listener;
+
 
     //TODO create a listener (background listner) which detecs NFC tag and write the coordinates to it
 
@@ -86,7 +87,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private NdefRecord createRecord(String text) throws UnsupportedEncodingException {
-        String lang       = "en";
+        String lang       = "";
         byte[] textBytes  = text.getBytes();
         byte[] langBytes  = lang.getBytes("US-ASCII");
         int    langLength = langBytes.length;
@@ -147,10 +148,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if (location != null) {
                     Log.w("INFO ", location.getLongitude() + "   " + location.getLatitude());
                     geoUri = "geo:"+ location.getLatitude()+","+location.getLongitude();
-                    mMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(location.getLatitude(), location.getLongitude()))
-                            .title("HERE IS MY CAR").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 20.0f));
+                    //readFromTag(getIntent());
                 }
                 else{
                     Log.w("INFO ", "no location found");
@@ -165,18 +163,62 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onNewIntent(Intent intent) {
 
         Log.i("Foreground dispatch", "Discovered tag with intent: " + intent);
-        Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+        detectedTag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
         //String externalType = "nfclab.com:geoService";
-        NdefRecord geoUriRecord = NdefRecord.createUri(geoUri);
+        //NdefRecord geoUriRecord = NdefRecord.createUri(geoUri);
         //NdefRecord extRecord = new NdefRecord(NdefRecord.TNF_EXTERNAL_TYPE, externalType.getBytes(), new byte[0], geoUri.getBytes());
        // NdefMessage newMessage = new NdefMessage(new NdefRecord[] { geoUriRecord});
         try {
-            write(geoUri,tag);
+            write(geoUri,detectedTag);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (FormatException e) {
             e.printStackTrace();
         }
+
+        readFromTag(intent);
+
+    }
+
+    public void readFromTag(Intent intent){
+
+        Ndef ndef = Ndef.get(detectedTag);
+
+
+        try{
+            ndef.connect();
+            Parcelable[] messages = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
+            if (messages != null) {
+                NdefMessage[] ndefMessages = new NdefMessage[messages.length];
+                for (int i = 0; i < messages.length; i++) {
+                    ndefMessages[i] = (NdefMessage) messages[i];
+                }
+                NdefRecord record = ndefMessages[0].getRecords()[0];
+
+                byte[] payload = record.getPayload();
+                String text = new String(payload);
+                Log.i("NFCReading ",text);
+                addMarkerOnMap(text);
+                ndef.close();
+            }
+        }
+        catch (Exception e) {
+            Toast.makeText(getApplicationContext(), "Cannot Read From Tag.", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void addMarkerOnMap(String text) {
+
+        String[] splits = text.split(":");
+        String[] latlng = splits[1].split(",");
+        double lat = Double.parseDouble(latlng[0]);
+        double lng = Double.parseDouble(latlng[1]);
+        Log.i("Latlng",lat + ","+lng);
+        mMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(lat, lng))
+                        .title("HERE IS MY CAR").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 20.0f));
+
     }
 
 
