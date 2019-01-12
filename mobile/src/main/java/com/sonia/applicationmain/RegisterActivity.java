@@ -9,6 +9,7 @@ import android.os.Bundle;
 
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -35,7 +36,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_activity);
         setTitle("Register");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
 
         registerBtn = findViewById(R.id.register_button);
         input_email = findViewById(R.id.email);

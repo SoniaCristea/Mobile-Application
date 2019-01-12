@@ -29,6 +29,9 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -37,6 +40,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private FirebaseAuth auth;
     private EditText email;
     private EditText password;
+    private Timer timer;
+
 
 
     @Override
@@ -56,10 +61,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setTitle("Login");
         auth = FirebaseAuth.getInstance();
 
-        if( auth.getCurrentUser() != null){
-            startActivity(new Intent(LoginActivity.this,MapsActivity.class));
-        }
-
+//        if( auth.getCurrentUser() != null) {
+//            startActivity(new Intent(LoginActivity.this, MapsActivity.class));
+//        }
     }
 
 
